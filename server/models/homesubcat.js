@@ -5,22 +5,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
-      allowNull: false,
       type: DataTypes.STRING,
     },
-    catId: {
-      // allowNull: false,
+    color: {
+      type: DataTypes.STRING,
+    },
+    maincatId: {
       type: DataTypes.UUID
     },
     createdBy: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
@@ -31,19 +30,23 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
-    }
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE,
+    },
 
   }, {});
   HomeSubCat.associate = function (models) {
-    // associations can be defined here
+
+    HomeSubCat.belongsTo(models.HomeCase)
     HomeSubCat.hasMany(models.HomeCate, {
-      foreignKey: 'id',
-      targetKey: 'catId'
+      foreignKey: 'maincatId',
+      sourceKey: 'id',
+      as: 'xHomeCat'
     })
-    HomeSubCat.belongsTo(models.HomeCaseDet, {
-      foreignKey: 'id',
-      targetKey: 'subcatId'
-    })
+    // -------------------------- above this line is done try to not modify
+
   };
   return HomeSubCat;
 };

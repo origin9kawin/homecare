@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        // defaultValue: Sequelize.UUIDV4,
       },
       name: {
         allowNull: false,
@@ -14,15 +14,17 @@ module.exports = {
         unique: true
       },
       color: {
-        allowNull: true,
         type: Sequelize.STRING
       },
+      // initState: {
+      //   type: Sequelize.BOOLEAN,
+      //   defaultValue: false
+      // },
       createdBy: {
         allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
@@ -30,10 +32,14 @@ module.exports = {
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      },
+      deletedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
+
     });
   },
   down: (queryInterface, Sequelize) => {

@@ -17,6 +17,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      initState: {
+        allowNull: true,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       createdBy: {
         allowNull: false,
         type: Sequelize.UUID
@@ -31,8 +36,15 @@ module.exports = {
       },
       updatedAt: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       }
+
     });
   },
   down: (queryInterface, Sequelize) => {

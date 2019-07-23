@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('HomeUser', {
+    return queryInterface.createTable('HomeUsers', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -27,11 +27,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       loginToken: {
-        allowNull: true,
         type: Sequelize.STRING
       },
       verifyToken: {
-        allowNull: true,
         type: Sequelize.STRING
       },
       userExpiredAt: {
@@ -39,19 +37,21 @@ module.exports = {
         type: Sequelize.DATE
       },
       createdBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       },
       updatedAt: {
-        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      },
+      deletedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       },
@@ -59,7 +59,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false
-      }
+      },
+      genTestTextPwd: {
+        type: Sequelize.STRING
+      },
+
     }, {
         freezeTableName: true,
       });

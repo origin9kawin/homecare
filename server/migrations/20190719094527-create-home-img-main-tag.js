@@ -1,42 +1,54 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('HomeCates', {
+    return queryInterface.createTable('HomeImgMainTags', {
+
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        // defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4,
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING,
-        // unique: true
+        unique: true
       },
       color: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      ordering: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
       },
       createdBy: {
-        type: Sequelize.UUID
+        allowNull: false,
+        type: Sequelize.STRING
       },
       updatedBy: {
-        type: Sequelize.UUID
+        allowNull: true,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE
       },
       updatedAt: {
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       },
       deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
+
+
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('HomeCates');
+    return queryInterface.dropTable('HomeImgMainTags');
   }
 };

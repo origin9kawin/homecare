@@ -9,74 +9,65 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       caseId: {
-        allowNull: false,
-        type: Sequelize.UUID
-      },
-      catId: {
-        allowNull: false,
-        type: Sequelize.UUID
-      },
-      subcatId: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       statusId: {
-        allowNull: false,
         type: Sequelize.UUID
       },
-      reasonId: {
-        allowNull: false,
+      catId: {
         type: Sequelize.UUID
       },
-      description: {
-        allowNull: false,
-        type: Sequelize.TEXT
+      subcatId: {
+        type: Sequelize.UUID
       },
-      homecareName: {
-        allowNull: false,
+      someLost: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      whatLost: {
         type: Sequelize.STRING
       },
-      homecareInDate: {
-        allowNull: false,
+      description: {
+        type: Sequelize.TEXT
+      },
+      checkInDate: {
         type: Sequelize.DATE
       },
       checkDetail: {
-        allowNull: false,
         type: Sequelize.STRING
       },
-      singOwner: {
-        allowNull: false,
+      receiverSignName: {
         type: Sequelize.STRING
       },
-      listDefect: {
-        allowNull: false,
-        type: Sequelize.STRING
+      receiverSignImage: {
+        type: Sequelize.UUID
+      },
+      receiverSignChatImage: {
+        type: Sequelize.UUID
       },
       remark: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       slaDay: {
-        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdBy: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
-      }
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      },
     });
   },
   down: (queryInterface, Sequelize) => {

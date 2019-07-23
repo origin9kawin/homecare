@@ -6,12 +6,19 @@ const express = require('express');
 const router = express.Router();
 const models = require('../../models');
 const Joi = require('@hapi/joi');
+const Debug = require('debug');
+
+
 const schema = Joi.object().keys({
-  // userId: Joi.string().trim().regex(/^[a-zA-Z0-9-]{36}$/).required(),
-  loginToken: Joi.string().trim().required()
+  userId: Joi.string().trim().regex(/^[a-zA-Z0-9-]{36}$/).required(),
+  loginToken: Joi.string().required()
   // -/^[a-zA-Z0-9.-_]{165,188}$/
 });
-router.get('/', async (req, res, next) => {
+
+router.get('/', (req, res) => res.status(403).send('hello world'));
+router.put('/', async (req, res, next) => {
+  const debug = Debug('!!!-----------> debug begin signout');
+  debug(req.body)
   try {
     const result = Joi.validate(req.body, schema);
     if (result.error) {
@@ -23,7 +30,7 @@ router.get('/', async (req, res, next) => {
         'id',
       ],
       where: {
-        // id: req.body.userId,
+        id: req.body.userId,
         loginToken: req.body.loginToken
       }
     }).then((userInfo) => {
@@ -33,20 +40,30 @@ router.get('/', async (req, res, next) => {
           loginToken: null,
           lastLogout: now
         }).then((update) => {
-          res.status(200).json({
-            message: 'Successfully logout',
+          res.status(201).json({
+            status: 201,
+            message: {
+              message: 'Successfully logout',
+            }
           })
         })
       } else {
-        console.log('not found');
+        debug('not found');
         res.status(401).json({
-          message: 'user not found'
+          status: 401,
+          message: {
+            message: 'user not found'
+          }
         });
       }
     })
   } catch (error) {
     next(error);
+  } finally {
+    debug('done trying')
   }
+  debug('!!!-----------> debug end signout');
+
 })
 
 module.exports = router

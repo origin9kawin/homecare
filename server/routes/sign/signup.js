@@ -7,57 +7,64 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../../models');
-const Auth = require('../../config/authentication');
+const User = require('../../config/user');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcrypt');
 const isEmpty = require('lodash.isempty');
 const Joi = require('@hapi/joi');
+const Debug = require('debug');
 const schema = Joi.object().keys({
-  username: Joi.string().alphanum().min(3).max(30).required(),
-  password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
-  email: Joi.string().required(),
+  username: Joi.string().trim().min(User.LENGTH_MIN_USER_SIGNUP).max(User.LENGTH_MAX_PWD_SIGNUP).required(),
+  password: Joi.string().trim().required(), // TODO
+  email: Joi.string().email({ minDomainSegments: 2 }),
   firstname: Joi.string().required(),
   expire: Joi.string().regex(/^[smhdy0-9]{2,30}$/)
+
 });
+router.get('/', (req, res) => res.status(403).send('hello world'));
 router.post('/', async (req, res, next) => {
+  const debug = Debug('!!!-----------> debug begin signup');
   try {
-    console.log(req);
+    debug(req.body);
     const result = Joi.validate(req.body, schema);
     if (result.error) {
-      res.status(400).json({ message: 'Error: data input invalid, please try again' });
+      res.status(400).json({
+        message: 'Error: data input invalid, please try again',
+        system: result.error
+      });
       return
     }
     const saltRounds = 10;
     const myPlainTextPassword = req.body.password;
     const bcryptResult = await bcrypt.hash(myPlainTextPassword, saltRounds);
     if (bcryptResult.error) {
-      res.status(400).json({ message: 'Error: encrypting' });
+      res.status(500).json({ message: 'Error: encrypting' });
       return
     }
-    console.log(bcryptResult);
+    debug(bcryptResult);
     var signOptions = {};
     var expireEmpty = isEmpty(req.body.expire);
     var data = {};
     if (!expireEmpty) {
       const ms = require('ms');
       const seconds = ms(req.body.expire) / 1000
-      signOptions.expiresIn = ms(Auth.verifyTokenExpire) / 1000; // verifyToken expire
+      signOptions.expiresIn = ms(User.EXPIRE_TOKEN_LOGIN) / 1000; // verifyToken expire
       data.userExpiredAt = userExpiredAt(seconds);
     }
-    const jwtResult = jwt.sign({ id: uuidv4() }, Auth.secretKey, signOptions)
-    console.log(jwtResult);
+    const jwtResult = jwt.sign({ id: uuidv4() }, User.SECRETKEY, signOptions)
+    debug(jwtResult);
     if (jwtResult.error) {
-      res.status(400).json({ message: 'Error: tokening' });
+      res.status(500).json({ message: 'Error: tokening' });
       return
     }
-    // data.id = uuid;
     data.username = req.body.username;
     data.email = req.body.email;
     data.firstname = req.body.firstname;
     data.hashPwd = bcryptResult;
     data.verifyToken = jwtResult;
-    data.visible = 1;
+    data.visible = User.USER_DEFAULT_VISIBLE;
+    debug(data.visible);
     const Sequelize = require('sequelize');
     await models.HomeUser
       .findOrCreate({
@@ -70,7 +77,7 @@ router.post('/', async (req, res, next) => {
             { email: data.email },
           ]
         },
-        defaults: data
+        defaults: data,
       })
       .spread((homeuserResult, created) => {
         if (!created) {
@@ -78,8 +85,11 @@ router.post('/', async (req, res, next) => {
             message: 'data input may exist'
           });
         } else {
-          res.status(200).json({
-            message: 'successfully created',
+          res.status(201).json({
+            message: {
+              message: 'successfully created',
+              show: 'verification email has been sent'
+            },
             username: homeuserResult.get().username,
             email: homeuserResult.get().email,
           });
@@ -88,9 +98,9 @@ router.post('/', async (req, res, next) => {
   } catch (error) {
     next(error);
   } finally {
-    console.log('done')
-    res.end();
+    debug('done trying')
   }
+  debug('!!!-----------> debug end signup');
 });
 function userExpiredAt(seconds) {
   var now = new Date();

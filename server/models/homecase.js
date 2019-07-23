@@ -5,70 +5,117 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      // defaultValue: DataTypes.UUIDV4,
     },
     casenumberId: {
-      allowNull: false,
-      type: DataTypes.STRING,
+      allowNull: true,
+      type: DataTypes.INTEGER,
       unique: true
     },
     projectId: {
-      allowNull: false,
+      allowNull: true,
+      type: DataTypes.UUID
+    },
+    catId: {
+      allowNull: true,
+      type: DataTypes.UUID
+    },
+    subcatId: {
+      allowNull: true,
       type: DataTypes.UUID
     },
     statusId: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.UUID
     },
     units: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
-    owner: {
-      allowNull: false,
+    issuerName: {
       type: DataTypes.STRING
     },
-    phoneOwner: {
-      allowNull: false,
+    homecareName: {
       type: DataTypes.STRING
     },
-    checkInDate: {
-      allowNull: false,
+    homecareInDate: {
       type: DataTypes.DATE
     },
     createdBy: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
     }
 
   }, {});
   HomeCase.associate = function (models) {
-    // associations can be defined here
-    HomeCase.belongsTo(models.HomeCaseDet, {
+
+    HomeCase.belongsTo(models.HomeProj)
+    HomeCase.hasOne(models.HomeStatus, {
+      as: 'xHomeStatus',
       foreignKey: 'id',
-      targetKey: 'caseId'
+      sourceKey: 'statusId',
     })
-    HomeCase.hasMany(models.HomeProj, {
+    HomeCase.hasMany(models.HomeCaseDet, {
+      foreignKey: 'caseId',
+      sourceKey: 'id',
+      as: 'xHomeCaseDet'
+    })
+    HomeCase.hasOne(models.HomeCate, {
+      as: 'xHomeCate',
       foreignKey: 'id',
-      targetKey: 'projectId'
+      sourceKey: 'catId',
     })
-    HomeCase.hasMany(models.HomeStatus, {
+    HomeCase.hasOne(models.HomeSubCat, {
+      as: 'xHomeSubCat',
       foreignKey: 'id',
-      targetKey: 'statusId'
+      sourceKey: 'subcatId',
     })
+    HomeCase.hasMany(models.HomePhone, {
+      foreignKey: 'caseId',
+      as: 'xHomePhone_Issuer',
+    })
+    HomeCase.hasMany(models.HomePhone, {
+      foreignKey: 'caseId',
+      as: 'xHomePhone_Owner',
+    })
+    // -------------------------- above this line is done modify it if
+
+
+    // HomeCase.hasMany(models.HomePhone, {
+    //   foreignKey: 'caseId',
+    //   as: 'issuer_phone',
+    // })
+    // HomeCase.hasMany(models.HomePhone, {
+    //   foreignKey: 'caseId',
+    //   as: 'owner_phone',
+    // })
+    HomeCase.hasMany(models.HomeListDefect, {
+      foreignKey: 'caseId',
+      as: 'defectlist',
+    })
+
+    // slave
+    // HomeCase.hasOne(models.HomeProj, {
+    //   foreignKey: 'id',
+    //   sourceKey: 'projectId',
+    //   as: 'project_asso'
+    // })
+
+
+
   };
   return HomeCase;
 };

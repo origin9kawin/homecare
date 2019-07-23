@@ -9,51 +9,54 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       casenumberId: {
-        allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         unique: true
       },
       projectId: {
-        allowNull: false,
+        type: Sequelize.UUID,
+      },
+      catId: {
+        type: Sequelize.UUID
+      },
+      subcatId: {
         type: Sequelize.UUID
       },
       statusId: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       units: {
-        allowNull: false,
         type: Sequelize.STRING
       },
-      owner: {
-        allowNull: false,
+      issuerName: {
         type: Sequelize.STRING
       },
-      phoneOwner: {
-        allowNull: false,
+      homecareName: {
         type: Sequelize.STRING
       },
-      checkInDate: {
-        allowNull: false,
+      homecareInDate: {
         type: Sequelize.DATE
       },
       createdBy: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       },
       updatedAt: {
         allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
       }
+
     });
   },
   down: (queryInterface, Sequelize) => {

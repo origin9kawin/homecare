@@ -6,14 +6,19 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../../models');
+const Debug = require('debug')
+
 router.post('/', async (req, res, next) => {
+  const debug = new Debug('------------> debin')
   try {
-    if (req.body.reason.length > 1) {
+    var count = Object.keys(req.body.reason).length;
+    debug(count)
+    if (count > 0) {
       var data = [];
       req.body.reason.forEach(reason => {
         data.push({
           name: reason.name,
-          color: reason.color,
+          color: '#' + Math.floor(Math.random() * 0x1000000).toString(16),
           createdBy: req.userId
         });
       });
@@ -35,15 +40,21 @@ router.post('/', async (req, res, next) => {
         }
       })
         .catch((error) => {
-          res.status(401).end()
+          res.status(401).json({
+            message: {
+              message: 'data may duplicate',
+              // system: error
+            }
+          })
         })
     }
   } catch (error) {
     next(error);
   } finally {
-    console.log('done')
+    debug('done')
     // res.end()
   }
+  debug('---------------------> end')
 
 });
 

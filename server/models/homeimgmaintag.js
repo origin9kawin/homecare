@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const HomeProj = sequelize.define('HomeProj', {
+  const HomeImgMainTag = sequelize.define('HomeImgMainTag', {
+
     id: {
       allowNull: false,
       primaryKey: true,
@@ -8,30 +9,26 @@ module.exports = (sequelize, DataTypes) => {
       // defaultValue: DataTypes.UUIDV4,
     },
     name: {
-      allowNull: false,
       type: DataTypes.STRING,
       unique: true
     },
     color: {
-      allowNull: true,
       type: DataTypes.STRING
     },
-    // initState: {
-    //   allowNull: true,
-    //   type: DataTypes.BOOLEAN,
-    //   defaultValue: false
-    // },
+    ordering: {
+      allowNull: true,
+      type: DataTypes.INTEGER,
+    },
     createdBy: {
-      allowNull: false,
-      type: DataTypes.UUID
+      type: DataTypes.STRING
     },
     updatedBy: {
       allowNull: true,
-      type: DataTypes.UUID
+      type: DataTypes.STRING
     },
     createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     },
     updatedAt: {
       allowNull: true,
@@ -43,24 +40,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
     }
 
+
   }, {});
-  HomeProj.associate = function (models) {
+  HomeImgMainTag.associate = function (models) {
 
-    HomeProj.hasMany(models.HomeCase, {
-      as: 'xHomeCase',
-      foreignKey: 'projectId',
-      sourceKey: 'id'
-    })
+    HomeImgMainTag.belongsTo(models.HomeImage)
+    HomeImgMainTag.belongsTo(models.HomeImgSubTag)
     // -------------------------- above this line is done try to not modify
-
-    // HomeProj.belongsTo(models.HomeCase)
-
-    //   foreignKey: 'id',
-    //   sourceKey: 'caseId',
-    //   as: 'case_proj_asso'
-    // })
-
-
+    HomeImgMainTag.hasMany(models.HomeImgSubTag, {
+      foreignKey: 'mainimgtagId',
+      sourceKey: 'id',
+      as: 'xHomeImgSubTag'
+    })
   };
-  return HomeProj;
+  return HomeImgMainTag;
 };

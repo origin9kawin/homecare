@@ -5,104 +5,102 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      // defaultValue: DataTypes.UUIDV4,
     },
     caseId: {
-      allowNull: false,
-      type: DataTypes.UUID
-    },
-    catId: {
-      allowNull: false,
-      type: DataTypes.UUID
-    },
-    subcatId: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     statusId: {
-      allowNull: false,
       type: DataTypes.UUID
     },
-    reasonId: {
-      allowNull: false,
+    catId: {
       type: DataTypes.UUID
     },
-    description: {
-      allowNull: false,
-      type: DataTypes.TEXT
+    subcatId: {
+      type: DataTypes.UUID
     },
-    homecareName: {
-      allowNull: false,
+    someLost: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    whatLost: {
       type: DataTypes.STRING
     },
-    homecareInDate: {
-      allowNull: false,
+    description: {
+      type: DataTypes.TEXT
+    },
+    checkInDate: {
       type: DataTypes.DATE
     },
     checkDetail: {
-      allowNull: false,
       type: DataTypes.STRING
     },
-    singOwner: {
-      allowNull: false,
+    receiverSignName: {
       type: DataTypes.STRING
     },
-    listDefect: {
-      allowNull: false,
-      type: DataTypes.STRING
+    receiverSignImage: {
+      type: DataTypes.UUID
+    },
+    receiverSignChatImage: {
+      type: DataTypes.UUID
     },
     remark: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     slaDay: {
-      allowNull: false,
       type: DataTypes.INTEGER
     },
     createdBy: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
-      allowNull: false,
       type: DataTypes.DATE
     },
     updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
     }
   }, {});
   HomeCaseDet.associate = function (models) {
-    // associations can be defined here
-    HomeCaseDet.belongsTo(models.HomeImage, {
-      foreignKey: 'id',
-      targetKey: 'casedetId'
+
+    HomeCaseDet.belongsTo(models.HomeCase)
+    HomeCaseDet.hasMany(models.HomeImage, {
+      foreignKey: 'casedetId',
+      sourceKey: 'id',
+      as: 'xHomeImage'
     })
-    HomeCaseDet.hasMany(models.HomeCase, {
-      foreignKey: 'id',
-      targetKey: 'caseId'
+    // -------------------------- above this line is done try to not modify
+
+    // HomeCaseDet.hasOne(models.HomeCate, {
+    //   foreignKey: 'catId',
+    //   // targetKey: 'id'
+    // })
+    // HomeCaseDet.hasOne(models.HomeSubCat, {
+    //   foreignKey: 'subcatId',
+    //   // targetKey: 'id'
+    // })
+    // HomeCaseDet.hasOne(models.HomeStatus, {
+    //   foreignKey: 'statusId',
+    //   // targetKey: 'id'
+    // })
+    // HomeCaseDet.hasOne(models.HomeReason, {
+    //   foreignKey: 'reasonId',
+    //   // targetKey: 'id'
+    // })
+    HomeCaseDet.hasMany(models.HomeListDefect, {
+      foreignKey: 'casedetId',
+      // as: 'bbb',
+      // as: 'defectlist'
+
     })
-    HomeCaseDet.hasMany(models.HomeCate, {
-      foreignKey: 'id',
-      targetKey: 'caseId'
-    })
-    HomeCaseDet.hasMany(models.HomeSubCat, {
-      foreignKey: 'id',
-      targetKey: 'subcatId'
-    })
-    HomeCaseDet.hasMany(models.HomeStatus, {
-      foreignKey: 'id',
-      targetKey: 'statusId'
-    })
-    HomeCaseDet.hasMany(models.HomeReason, {
-      foreignKey: 'id',
-      targetKey: 'reasonId'
-    })
+
+
   };
   return HomeCaseDet;
 };

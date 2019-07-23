@@ -27,11 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     loginToken: {
-      allowNull: true,
       type: DataTypes.STRING
     },
     verifyToken: {
-      allowNull: true,
       type: DataTypes.STRING
     },
     userExpiredAt: {
@@ -39,29 +37,32 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE
     },
     createdBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
     },
     visible: {
       allowNull: false,
       type: DataTypes.BOOLEAN,
       defaultValue: false
-    }
+    },
+    genTestTextPwd: {
+      type: DataTypes.STRING
+    },
+
   }, {
-      freezeTableName: true,
+      freezeTableName: false,
     });
   HomeUser.associate = function (models) {
 

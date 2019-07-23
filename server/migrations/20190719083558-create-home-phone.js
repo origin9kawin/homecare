@@ -1,30 +1,35 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('HomeCates', {
+    return queryInterface.createTable('HomePhones', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        // defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4,
       },
-      name: {
+      number: {
         type: Sequelize.STRING,
-        // unique: true
       },
       color: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
+      },
+      caseId: {
+        type: Sequelize.UUID
+      },
+      homecareOwner: {
+        type: Sequelize.BOOLEAN
       },
       createdBy: {
-        type: Sequelize.UUID
+        allowNull: false,
+        type: Sequelize.STRING
       },
       updatedBy: {
-        type: Sequelize.UUID
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE
       },
       updatedAt: {
         type: Sequelize.DATE,
@@ -34,9 +39,10 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
+
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('HomeCates');
+    return queryInterface.dropTable('HomePhones');
   }
 };

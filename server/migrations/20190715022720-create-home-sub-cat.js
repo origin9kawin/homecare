@@ -12,8 +12,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      catId: {
+      color: {
         allowNull: false,
+        type: Sequelize.STRING,
+      },
+      maincatId: {
         type: Sequelize.UUID
       },
       createdBy: {
@@ -21,7 +24,6 @@ module.exports = {
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
@@ -29,10 +31,14 @@ module.exports = {
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      },
+      deletedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
+
     });
   },
   down: (queryInterface, Sequelize) => {

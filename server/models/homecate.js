@@ -5,38 +5,48 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
-      allowNull: false,
       type: DataTypes.STRING,
-      unique: true
+      // unique: true
+    },
+    color: {
+      type: DataTypes.STRING,
     },
     createdBy: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
     }
 
   }, {});
   HomeCate.associate = function (models) {
-    // associations can be defined here
-    HomeCate.belongsTo(models.HomeSubCat, {
-      foreignKey: 'id',
-      targetKey: 'catId'
-    });
+
+    // -------------------------- above this line is done try to not modify
+    // HomeCate.belongsTo(models.HomeCase)
+
+    HomeCate.belongsTo(models.HomeSubCat)
+    // HomeCate.hasMany(models.HomeSubCat, {
+    //   foreignKey: 'maincatId',
+    //   sourceKey: 'id',
+    //   as: 'xHomeSubCat'
+    // });
+
+
   };
   return HomeCate;
 };

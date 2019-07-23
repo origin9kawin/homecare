@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
       allowNull: false,
@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     color: {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    initState: {
+      allowNull: true,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     createdBy: {
       allowNull: false,
@@ -30,20 +35,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     updatedAt: {
       allowNull: true,
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    deletedAt: {
+      allowNull: true,
+      type: DataTypes.DATE,
     }
+
   }, {
       freezeTableName: true,
     });
   HomeStatus.associate = function (models) {
-    HomeStatus.belongsTo(models.HomeCase, {
-      foreignKey: 'id',
-      targetKey: 'statusId'
-    })
-    HomeStatus.belongsTo(models.HomeCaseDet, {
-      foreignKey: 'id',
-      targetKey: 'statusId'
-    })
+    // // slave
+    // HomeStatus.belongsTo(models.HomeCaseDet, {
+    //   foreignKey: 'caseId',
+    // })
+    // // HomeStatus.belongsTo(models.HomeCase)
+    // // master
+    // HomeStatus.belongsTo(models.HomeCase)
+
   };
   return HomeStatus;
 };

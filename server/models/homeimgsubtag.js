@@ -1,37 +1,35 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const HomeReason = sequelize.define('HomeReason', {
+  const HomeImgSubTag = sequelize.define('HomeImgSubTag', {
+
     id: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
-      allowNull: false,
       type: DataTypes.STRING,
       unique: true
     },
     color: {
-      allowNull: false,
       type: DataTypes.STRING
     },
-    initState: {
+    mainimgtagId: {
+      // 
       allowNull: true,
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: DataTypes.UUID
     },
     createdBy: {
-      allowNull: false,
-      type: DataTypes.UUID
+      type: DataTypes.STRING
     },
     updatedBy: {
       allowNull: true,
-      type: DataTypes.UUID
+      type: DataTypes.STRING
     },
     createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     },
     updatedAt: {
       allowNull: true,
@@ -44,11 +42,15 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   }, {});
-  HomeReason.associate = function (models) {
-    HomeReason.belongsTo(models.HomeCaseDet, {
-      foreignKey: 'reasonId',
-      // targetKey: 'id'
+  HomeImgSubTag.associate = function (models) {
+
+    HomeImgSubTag.belongsTo(models.HomeImgMainTag)
+    HomeImgSubTag.hasMany(models.HomeImgMainTag, {
+      foreignKey: 'mainimgtagId',
+      as: 'xHomeImgMainTag'
     })
+    // -------------------------- above this line is done try to not modify
+
   };
-  return HomeReason;
+  return HomeImgSubTag;
 };

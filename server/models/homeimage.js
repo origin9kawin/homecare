@@ -8,45 +8,59 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4
     },
     casedetId: {
-      allowNull: false,
       type: DataTypes.UUID
     },
+    mainimgtagId: {
+      type: DataTypes.UUID,
+    },
+    subimgtagId: {
+      type: DataTypes.UUID,
+    },
     fileName: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     fileType: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     fileSize: {
-      allowNull: false,
       type: DataTypes.INTEGER
     },
     createdBy: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
-      allowNull: false,
       type: DataTypes.DATE
     },
     updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    deletedAt: {
+      type: DataTypes.DATE,
     }
 
   }, {});
   HomeImage.associate = function (models) {
-    HomeImage.hasMany(models.HomeCaseDet, {
+
+    HomeImage.belongsTo(models.HomeCaseDet);
+    HomeImage.hasMany(models.HomeImgMainTag, {
       foreignKey: 'id',
-      targetkey: 'casedetId',
-    });
+      sourceKey: 'mainimgtagId',
+      as: 'xHomeImgMainTag'
+    })
+    // -------------------------- above this line is done try to not modify
+    // HomeImgMainTag.hasMany(models.HomeImgSubTag, {
+    //   foreignKey: 'mainimgtagId',
+    //   as: 'xHomeImgSubTag'
+    // })
+
+    // HomeImage.hasOne(models.HomeImgSubTag, {
+    //   foreignKey: 'subimgtagId'
+    // })
+
   };
   return HomeImage;
 };
