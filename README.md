@@ -25,6 +25,8 @@ mv .env.example .env
 # Edit database infomation .env
 vi .env
 
+# npm >= 6.10.3 is required
+
 # Install all dependencies
 npm install
 
@@ -33,6 +35,7 @@ CREATE DATABASE `homecare_dev_alpha` DEFAULT CHARACTER SET = `utf8`;
 
 # Sequelize Migration
 npm install -g sequelize-cli
+npm install -g nodemon
 sequelize db:migrate
 sequelize db:seed:all
 
@@ -42,10 +45,16 @@ nodemon
 
 ## For Expo
 ```
+# Install Expo
+npm install -g expo-cli
+
 cd mobile
 
 # Install all dependencies
 npm install
+
+# Edit server IP and PORT
+vi config/Config.js
 
 # Run Expo
 expo start
