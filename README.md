@@ -136,7 +136,6 @@ MOCK_DATA_GENERATE_USER|1
 │   │   ├── Kanit-Regular.ttf
 │   │   ├── Roboto-Medium.ttf
 │   │   └── SukhumvitSet-Bold.ttf
-│   ├── package-lock.json
 │   ├── package.json
 │   └── utils
 │       └── UnixThai.js
@@ -180,7 +179,6 @@ MOCK_DATA_GENERATE_USER|1
     │   ├── homesubcat.js
     │   ├── homeuser.js
     │   └── index.js
-    ├── package-lock.json
     ├── package.json
     ├── routes
     │   ├── create
@@ -210,5 +208,5 @@ MOCK_DATA_GENERATE_USER|1
     └── uploads
         └── a.jpg
 
-16 directories, 104 files
+16 directories, 102 files
 ```
