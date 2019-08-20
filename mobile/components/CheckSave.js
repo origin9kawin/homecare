@@ -124,11 +124,6 @@ export default class CheckSave extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     console.log("\nCheckSave->componentDidUpdate: updated")
   }
-  componentWillUnmount() {
-    this.params = null
-    this.remarkValues = null
-    this.setState({})
-  }
   handledefectedChangeOption = (value) => {
     console.log("\nCheckSave->handledefectedChangeOption: " + value)
     let remarkVal = this.remarkValues.find(x => x.id === value).value
