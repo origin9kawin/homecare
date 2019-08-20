@@ -60,7 +60,7 @@ LOG_LEVEL|info
 DEBUG|*
 SQL_HOST|127.0.0.1
 SQL_PORT|3306
-SQL_DB|home1
+SQL_DB|homecare_dev_alpha
 SQL_USER|user
 SQL_PASS|password
 SQL_DIALECT|mysql
