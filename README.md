@@ -32,6 +32,7 @@ npm install
 CREATE DATABASE `homecare_dev_alpha` DEFAULT CHARACTER SET = `utf8`;
 
 # Sequelize Migration
+npm install -g sequelize-cli
 sequelize db:migrate
 sequelize db:seed:all
 
