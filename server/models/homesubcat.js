@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
       type: DataTypes.STRING,
@@ -16,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     maincatId: {
       type: DataTypes.UUID
     },
+    slaDay: {
+      type: DataTypes.INTEGER
+    },
     createdBy: {
       type: DataTypes.UUID
     },
@@ -23,22 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     createdAt: {
-      allowNull: false,
       type: DataTypes.DATE
     },
     updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
     },
-
   }, {});
   HomeSubCat.associate = function (models) {
-
     HomeSubCat.belongsTo(models.HomeCase)
     HomeSubCat.hasMany(models.HomeCate, {
       foreignKey: 'maincatId',
@@ -46,7 +42,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'xHomeCat'
     })
     // -------------------------- above this line is done try to not modify
-
   };
   return HomeSubCat;
 };

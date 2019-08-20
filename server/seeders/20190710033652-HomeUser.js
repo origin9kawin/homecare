@@ -18,26 +18,65 @@ module.exports = {
     const users = []
     var textPwd = '';
     var hashPwd = '';
-    for (let i = 0; i < mock.MOCK_DATA_GENERATE; i++) {
+    for (let i = 0; i < mock.MOCK_DATA_GENERATE_USER; i++) {
       textPwd = faker.internet.userName();
       hashPwd = await bcrypt.hash(textPwd, bcrypt.genSaltSync(10));
       users.push({
         firstname: faker.name.findName(),
         email: faker.internet.email(),
         username: faker.internet.userName(),
+        role: 1,
         hashPwd: hashPwd,
         genTestTextPwd: textPwd,
         visible: faker.random.boolean(),
       })
     }
     // for test user
+    const genTestTextPwd = '12345'
     users.push({
-      firstname: 'มานี มานะ',
-      username: 'demo',
-      email: 'demo@electronics.email.com',
-      hashPwd: await bcrypt.hash('12345', bcrypt.genSaltSync(10)),
+      firstname: 'แอดมิน',
+      username: 'admin',
+      email: 'admin@homecare.com',
+      role: 0,
+      hashPwd: await bcrypt.hash(genTestTextPwd, bcrypt.genSaltSync(10)),
       visible: true,
-      genTestTextPwd: '12345'
+      genTestTextPwd: genTestTextPwd
+    })
+    users.push({
+      firstname: 'กุสุมา',
+      username: 'opener',
+      email: 'opener@homecare.com',
+      role: 1,
+      hashPwd: await bcrypt.hash(genTestTextPwd, bcrypt.genSaltSync(10)),
+      visible: true,
+      genTestTextPwd: genTestTextPwd
+    })
+    users.push({
+      firstname: 'นายตรวจ',
+      username: 'checker',
+      email: 'checker@homecare.com',
+      role: 2,
+      hashPwd: await bcrypt.hash(genTestTextPwd, bcrypt.genSaltSync(10)),
+      visible: true,
+      genTestTextPwd: genTestTextPwd
+    })
+    users.push({
+      firstname: 'ช่างเอก',
+      username: 'operator1',
+      email: 'operator1@homecare.com',
+      role: 3,
+      hashPwd: await bcrypt.hash(genTestTextPwd, bcrypt.genSaltSync(10)),
+      visible: true,
+      genTestTextPwd: genTestTextPwd
+    })
+    users.push({
+      firstname: 'ช่างกร',
+      username: 'operator2',
+      email: 'operator2@homecare.com',
+      role: 3,
+      hashPwd: await bcrypt.hash(genTestTextPwd, bcrypt.genSaltSync(10)),
+      visible: true,
+      genTestTextPwd: genTestTextPwd
     })
     // end data structure
     const buildQueries = () => {
@@ -48,6 +87,7 @@ module.exports = {
           username: user.username,
           email: user.email,
           hashPwd: user.hashPwd,
+          role: user.role,
           userExpiredAt: userExpiredAt('1y'),
           visible: user.visible,
           genTestTextPwd: user.genTestTextPwd
@@ -66,9 +106,12 @@ module.exports = {
             username: item.username,
             email: item.email,
             hashPwd: item.hashPwd,
+            role: item.role,
             userExpiredAt: item.userExpiredAt,
             visible: item.visible,
-            genTestTextPwd: item.genTestTextPwd
+            genTestTextPwd: item.genTestTextPwd,
+            createdAt: new Date(),
+            // updatedAt: new Date()
           })
         ) // resolve
       });

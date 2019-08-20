@@ -32,6 +32,7 @@ module.exports = {
           {
             name: faker.commerce.product(),
             color: faker.internet.color(),
+            slaDay: 1,
             createdBy: creater,
           }
         )
@@ -39,6 +40,7 @@ module.exports = {
       category.push({
         name: faker.commerce.productMaterial(),
         color: faker.internet.color(),
+        slaDay: 1,
         createdBy: creater,
         subcategory: subcategories
       })
@@ -52,12 +54,14 @@ module.exports = {
           subcats.push({
             name: sub.name,
             color: sub.color,
+            slaDay: ele.slaDay,
             createdBy: sub.createdBy
           })
         })
         queries.push({
           name: ele.name,
           color: ele.color,
+          slaDay: ele.slaDay,
           createdBy: ele.createdBy,
           subcategory: subcats
         })
@@ -76,7 +80,9 @@ module.exports = {
             defaults: {
               id: uuidv4(),
               color: item.color,
-              createdBy: item.createdBy
+              slaDay: item.slaDay,
+              createdBy: item.createdBy,
+              createdAt: new Date(),
             },
             limit: 1,
           },
@@ -89,8 +95,10 @@ module.exports = {
                     id: uuidv4(),
                     name: subcate.name,
                     color: subcate.color,
+                    slaDay: subcate.slaDay,
                     maincatId: homecate.get().id,
-                    createdBy: subcate.createdBy
+                    createdBy: subcate.createdBy,
+                    createdAt: new Date(),
                   });
                 })
                 await models.HomeSubCat.bulkCreate(data, {

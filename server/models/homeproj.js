@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
       allowNull: false,
@@ -16,51 +15,31 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING
     },
-    // initState: {
-    //   allowNull: true,
-    //   type: DataTypes.BOOLEAN,
-    //   defaultValue: false
-    // },
     createdBy: {
-      allowNull: false,
       type: DataTypes.UUID
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.UUID
     },
     createdAt: {
-      allowNull: false,
       type: DataTypes.DATE
     },
     updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
     }
-
-  }, {});
+  }, {
+      timestamps: false
+    });
   HomeProj.associate = function (models) {
-
     HomeProj.hasMany(models.HomeCase, {
       as: 'xHomeCase',
       foreignKey: 'projectId',
       sourceKey: 'id'
     })
     // -------------------------- above this line is done try to not modify
-
-    // HomeProj.belongsTo(models.HomeCase)
-
-    //   foreignKey: 'id',
-    //   sourceKey: 'caseId',
-    //   as: 'case_proj_asso'
-    // })
-
-
   };
   return HomeProj;
 };

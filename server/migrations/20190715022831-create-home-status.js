@@ -6,12 +6,14 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        // defaultValue: Sequelize.UUIDV4,
       },
       name: {
         allowNull: false,
         type: Sequelize.STRING,
-        unique: true
+      },
+      desc: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       color: {
         allowNull: false,
@@ -19,34 +21,43 @@ module.exports = {
       },
       initState: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: false
+        type: Sequelize.BOOLEAN,
+      },
+      filterAble: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      selectAble: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      reasonBtn: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      ordering: {
+        type: Sequelize.INTEGER
       },
       createdBy: {
         allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
     }, {
         freezeTableName: true,
+        timestamps: false,
       });
   },
   down: (queryInterface, Sequelize) => {

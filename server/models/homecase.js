@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4,
     },
     casenumberId: {
       allowNull: true,
@@ -41,6 +40,24 @@ module.exports = (sequelize, DataTypes) => {
     homecareInDate: {
       type: DataTypes.DATE
     },
+    someLost: {
+      type: DataTypes.BOOLEAN,
+    },
+    whatLost: {
+      type: DataTypes.STRING
+    },
+    description: {
+      type: DataTypes.TEXT
+    },
+    receiverSignName: {
+      type: DataTypes.STRING
+    },
+    receiverSignImage: {
+      type: DataTypes.UUID
+    },
+    receiverSignChatImage: {
+      type: DataTypes.UUID
+    },
     createdBy: {
       type: DataTypes.UUID
     },
@@ -49,20 +66,22 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
       type: DataTypes.DATE,
     }
 
-  }, {});
+  }, {
+      timestamps: false
+    });
   HomeCase.associate = function (models) {
 
     HomeCase.belongsTo(models.HomeProj)
+    HomeCase.belongsTo(models.HomeCaseDet)
+    HomeCase.belongsTo(models.HomeStatus)
     HomeCase.hasOne(models.HomeStatus, {
       as: 'xHomeStatus',
       foreignKey: 'id',
@@ -84,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: 'subcatId',
     })
     HomeCase.hasMany(models.HomePhone, {
+      sourceKey: 'id',
       foreignKey: 'caseId',
       as: 'xHomePhone_Issuer',
     })
@@ -91,31 +111,16 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'caseId',
       as: 'xHomePhone_Owner',
     })
-    // -------------------------- above this line is done modify it if
-
-
-    // HomeCase.hasMany(models.HomePhone, {
-    //   foreignKey: 'caseId',
-    //   as: 'issuer_phone',
-    // })
-    // HomeCase.hasMany(models.HomePhone, {
-    //   foreignKey: 'caseId',
-    //   as: 'owner_phone',
-    // })
+    HomeCase.hasMany(models.HomeImage, {
+      foreignKey: 'caseId',
+      sourceKey: 'id',
+      as: 'xHomeImage'
+    })
     HomeCase.hasMany(models.HomeListDefect, {
       foreignKey: 'caseId',
-      as: 'defectlist',
+      sourceKey: 'id',
+      as: 'xHomeListDefect'
     })
-
-    // slave
-    // HomeCase.hasOne(models.HomeProj, {
-    //   foreignKey: 'id',
-    //   sourceKey: 'projectId',
-    //   as: 'project_asso'
-    // })
-
-
-
   };
   return HomeCase;
 };

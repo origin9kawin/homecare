@@ -1,13 +1,7 @@
-/**
- * verify user input
- * verify loginToken
- * insert into database
- */
 const express = require('express');
 const router = express.Router();
 const models = require('../../models');
 const Debug = require('debug')
-
 router.post('/', async (req, res, next) => {
   const debug = new Debug('------------> debin')
   try {
@@ -23,8 +17,6 @@ router.post('/', async (req, res, next) => {
         });
       });
       models.HomeReason.bulkCreate(data, {
-        // field: ['name', 'color', 'createdBy'],
-        // updateOnDuplicate: ['name'],
         updateOnDuplicate: true,
         individualHooks: true,
       }).then((response) => { // Notice: There are no arguments here, as of right now you'll have to...
@@ -43,7 +35,6 @@ router.post('/', async (req, res, next) => {
           res.status(401).json({
             message: {
               message: 'data may duplicate',
-              // system: error
             }
           })
         })
@@ -52,10 +43,7 @@ router.post('/', async (req, res, next) => {
     next(error);
   } finally {
     debug('done')
-    // res.end()
   }
   debug('---------------------> end')
-
 });
-
 module.exports = router

@@ -8,16 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      deletedAt: {
-        type: Sequelize.DATE
+      createdBy: {
+        type: Sequelize.UUID
       },
       createdAt: {
         type: Sequelize.DATE
       },
       updatedAt: {
         type: Sequelize.DATE
-      }
-    });
+      },
+      deletedAt: {
+        type: Sequelize.DATE
+      },
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeCaseNumbers');

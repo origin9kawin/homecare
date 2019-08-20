@@ -21,26 +21,24 @@ module.exports = {
       //   defaultValue: false
       // },
       createdBy: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeProjs');

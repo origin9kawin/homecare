@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 module.exports = {
   EXPIRE_TOKEN_VERIFY: process.env.EXPIRE_TOKEN_VERIFY,
   EXPIRE_TOKEN_LOGIN: process.env.EXPIRE_TOKEN_LOGIN,

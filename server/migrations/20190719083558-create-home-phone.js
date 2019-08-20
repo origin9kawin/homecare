@@ -21,26 +21,24 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       createdBy: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       updatedBy: {
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomePhones');

@@ -1,9 +1,3 @@
-/**
- * valid user input
- * generate verify token with expire in hrs
- * check to see if they is exist in database
- * return success and error in json*
- */
 const express = require('express');
 const router = express.Router();
 const models = require('../../models');
@@ -20,7 +14,6 @@ const schema = Joi.object().keys({
   email: Joi.string().email({ minDomainSegments: 2 }),
   firstname: Joi.string().required(),
   expire: Joi.string().regex(/^[smhdy0-9]{2,30}$/)
-
 });
 router.get('/', (req, res) => res.status(403).send('hello world'));
 router.post('/', async (req, res, next) => {

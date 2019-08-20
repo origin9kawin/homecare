@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const upload = {
   UPLOAD_LOCATION: process.env.UPLOAD_LOCATION,
   UPLOAD_FILESIZE: parseInt(process.env.UPLOAD_FILESIZE), // MB

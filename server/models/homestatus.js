@@ -5,56 +5,60 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4,
     },
     name: {
       allowNull: false,
       type: DataTypes.STRING,
-      unique: true
+    },
+    desc: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     color: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     initState: {
-      allowNull: true,
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+    },
+    filterAble: {
+      type: DataTypes.BOOLEAN,
+    },
+    selectAble: {
+      type: DataTypes.BOOLEAN,
+    },
+    reasonBtn: {
+      type: DataTypes.BOOLEAN,
+    },
+    ordering: {
+      type: DataTypes.INTEGER
     },
     createdBy: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     updatedBy: {
-      allowNull: true,
       type: DataTypes.STRING
     },
     createdAt: {
-      allowNull: false,
       type: DataTypes.DATE
     },
     updatedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
-      allowNull: true,
       type: DataTypes.DATE,
     }
-
   }, {
       freezeTableName: true,
+      timestamps: false
     });
   HomeStatus.associate = function (models) {
-    // // slave
-    // HomeStatus.belongsTo(models.HomeCaseDet, {
-    //   foreignKey: 'caseId',
-    // })
-    // // HomeStatus.belongsTo(models.HomeCase)
-    // // master
-    // HomeStatus.belongsTo(models.HomeCase)
-
+    HomeStatus.hasMany(models.HomeCase, {
+      foreignKey: 'statusId',
+      sourceKey: 'id',
+      as: 'xHomeCase'
+    })
+    HomeStatus.belongsTo(models.HomeCaseDet)
+    // -------------------------- above this line is done try to not modify
   };
   return HomeStatus;
 };

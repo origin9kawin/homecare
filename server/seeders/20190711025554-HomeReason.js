@@ -25,28 +25,42 @@ module.exports = {
       id: uuidv4(),
       name: 'ติดต่อไม่ได้',
       color: '#' + Math.floor(Math.random() * 0x1000000).toString(16),
-      initState: true,
+      ordering: 1,
       createdBy: createdBy,
+      createdAt: new Date(),
+      // updatedAt: new Date()
     }, {
       id: uuidv4(),
       name: 'ติดต่อกลับ',
       color: '#' + Math.floor(Math.random() * 0x1000000).toString(16),
+      ordering: 2,
       createdBy: createdBy,
+      createdAt: new Date(),
+      // updatedAt: new Date()
     }, {
       id: uuidv4(),
       name: 'ไม่สะดวก',
+      ordering: 3,
       color: '#' + Math.floor(Math.random() * 0x1000000).toString(16),
       createdBy: createdBy,
+      createdAt: new Date(),
+      // updatedAt: new Date()
     }, {
       id: uuidv4(),
       name: 'รอคิวช่าง',
       color: '#' + Math.floor(Math.random() * 0x1000000).toString(16),
+      ordering: 4,
       createdBy: createdBy,
+      createdAt: new Date(),
+      // updatedAt: new Date()
     }, {
       id: uuidv4(),
       name: 'รอของ',
       color: '#' + Math.floor(Math.random() * 0x1000000).toString(16),
+      ordering: 5,
       createdBy: createdBy,
+      createdAt: new Date(),
+      // updatedAt: new Date()
     }
     ], {})
   },

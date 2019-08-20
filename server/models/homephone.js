@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const HomePhone = sequelize.define('HomePhone', {
-
     id: {
       allowNull: false,
       primaryKey: true,
@@ -34,24 +33,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
       type: DataTypes.DATE,
     }
-
-
-
-  }, {});
-
-
+  }, {
+      timestamps: false
+    });
   HomePhone.associate = function (models) {
-
-    HomePhone.belongsTo(models.HomeCase, {
-      // foreignKey: 'caseId',
-    })
-
-
+    HomePhone.belongsTo(models.HomeCase)
+    HomePhone.belongsTo(models.HomeCaseDet)
+    // -------------------------- above this line is done try to not modify
   };
   return HomePhone;
 };

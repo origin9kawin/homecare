@@ -5,25 +5,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV1,
       defaultValue: DataTypes.UUIDV4,
     },
     username: {
-      allowNull: false,
       type: DataTypes.STRING,
       unique: true
     },
     firstname: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     email: {
-      allowNull: false,
       type: DataTypes.STRING,
       unique: true
     },
     hashPwd: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     loginToken: {
@@ -33,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     userExpiredAt: {
-      allowNull: false,
       type: DataTypes.DATE
     },
     createdBy: {
@@ -44,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     updatedAt: {
       type: DataTypes.DATE,
@@ -52,20 +45,20 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: {
       type: DataTypes.DATE,
     },
+    role: {
+      type: DataTypes.INTEGER,
+    },
     visible: {
-      allowNull: false,
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
     genTestTextPwd: {
       type: DataTypes.STRING
     },
-
   }, {
       freezeTableName: false,
     });
   HomeUser.associate = function (models) {
-
   };
   return HomeUser;
 };

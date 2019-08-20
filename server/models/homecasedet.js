@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4,
     },
     caseId: {
       type: DataTypes.UUID
@@ -19,36 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     subcatId: {
       type: DataTypes.UUID
     },
-    someLost: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    whatLost: {
-      type: DataTypes.STRING
-    },
-    description: {
-      type: DataTypes.TEXT
-    },
-    checkInDate: {
-      type: DataTypes.DATE
-    },
-    checkDetail: {
-      type: DataTypes.STRING
-    },
-    receiverSignName: {
-      type: DataTypes.STRING
-    },
-    receiverSignImage: {
-      type: DataTypes.UUID
-    },
-    receiverSignChatImage: {
-      type: DataTypes.UUID
-    },
-    remark: {
-      type: DataTypes.STRING
-    },
-    slaDay: {
-      type: DataTypes.INTEGER
+    assignedTo: {
+      type: DataTypes.UUID,
     },
     createdBy: {
       type: DataTypes.UUID
@@ -57,50 +28,56 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     },
     createdAt: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
       type: DataTypes.DATE,
     }
-  }, {});
+  }, {
+      timestamps: false
+    });
   HomeCaseDet.associate = function (models) {
-
-    HomeCaseDet.belongsTo(models.HomeCase)
+    HomeCaseDet.belongsTo(models.HomeListDefect);
+    HomeCaseDet.belongsTo(models.HomeCase);
     HomeCaseDet.hasMany(models.HomeImage, {
       foreignKey: 'casedetId',
       sourceKey: 'id',
       as: 'xHomeImage'
     })
-    // -------------------------- above this line is done try to not modify
-
-    // HomeCaseDet.hasOne(models.HomeCate, {
-    //   foreignKey: 'catId',
-    //   // targetKey: 'id'
-    // })
-    // HomeCaseDet.hasOne(models.HomeSubCat, {
-    //   foreignKey: 'subcatId',
-    //   // targetKey: 'id'
-    // })
-    // HomeCaseDet.hasOne(models.HomeStatus, {
-    //   foreignKey: 'statusId',
-    //   // targetKey: 'id'
-    // })
-    // HomeCaseDet.hasOne(models.HomeReason, {
-    //   foreignKey: 'reasonId',
-    //   // targetKey: 'id'
-    // })
     HomeCaseDet.hasMany(models.HomeListDefect, {
       foreignKey: 'casedetId',
-      // as: 'bbb',
-      // as: 'defectlist'
-
+      sourceKey: 'id',
+      as: 'xHomeListDefect'
     })
-
-
+    HomeCaseDet.hasMany(models.HomePhone, {
+      foreignKey: 'caseId',
+      sourceKey: 'caseId',
+      as: 'xHomePhone_Owner'
+    })
+    HomeCaseDet.hasMany(models.HomePhone, {
+      foreignKey: 'caseId',
+      sourceKey: 'caseId',
+      as: 'xHomePhone_Issuer'
+    })
+    HomeCaseDet.hasMany(models.HomeCase, {
+      as: 'xHomeCase',
+      sourceKey: 'caseId',
+      foreignKey: 'id'
+    })
+    HomeCaseDet.hasMany(models.HomeStatus, {
+      foreignKey: 'id',
+      sourceKey: 'statusId',
+      as: 'xHomeStatus'
+    })
+    HomeCaseDet.hasMany(models.HomeReasonDet, {
+      as: 'xHomeReasonDet',
+      sourceKey: 'id',
+      foreignKey: 'casedetid',
+    })
+    // -------------------------- above this line is done try to not modify
   };
   return HomeCaseDet;
 };

@@ -1,12 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const HomeListDefect = sequelize.define('HomeListDefect', {
-
     id: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4
     },
     caseId: {
       type: DataTypes.UUID
@@ -17,35 +15,37 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING
     },
+    remark: {
+      type: DataTypes.STRING
+    },
     color: {
       type: DataTypes.STRING
     },
     createdBy: {
       type: DataTypes.UUID
     },
+    updatedBy: {
+      type: DataTypes.UUID,
+    },
     createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     deletedAt: {
       type: DataTypes.DATE,
     }
-
-
-  }, {});
+  }, {
+      timestamps: false
+    });
   HomeListDefect.associate = function (models) {
-    // associations can be defined here
-    // HomeListDefect.belongsTo(models.HomeCaseDet, {
-    //   foreignKey: 'casedetId'
-    // })
-    // HomeListDefect.belongsTo(models.HomeCase, {
-    //   foreignKey: 'caseId'
-    // })
-
+    HomeListDefect.belongsTo(models.HomeCaseDet);
+    HomeListDefect.hasMany(models.HomeCaseDet, {
+      as: 'xHomeCaseDet',
+      sourceKey: 'casedetId',
+      foreignKey: 'id'
+    })
   };
   return HomeListDefect;
 };

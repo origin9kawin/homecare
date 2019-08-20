@@ -16,6 +16,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      remark: {
+        type: Sequelize.STRING
+      },
       color: {
         type: Sequelize.STRING
       },
@@ -26,19 +29,18 @@ module.exports = {
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeListDefects');

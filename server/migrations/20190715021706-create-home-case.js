@@ -9,22 +9,28 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       casenumberId: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         unique: true
       },
       projectId: {
-        type: Sequelize.UUID,
+        allowNull: true,
+        type: Sequelize.UUID
       },
       catId: {
+        allowNull: true,
         type: Sequelize.UUID
       },
       subcatId: {
+        allowNull: true,
         type: Sequelize.UUID
       },
       statusId: {
+        allowNull: true,
         type: Sequelize.UUID
       },
       units: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       issuerName: {
@@ -36,6 +42,24 @@ module.exports = {
       homecareInDate: {
         type: Sequelize.DATE
       },
+      someLost: {
+        type: Sequelize.BOOLEAN,
+      },
+      whatLost: {
+        type: Sequelize.STRING
+      },
+      description: {
+        type: Sequelize.TEXT
+      },
+      receiverSignName: {
+        type: Sequelize.STRING
+      },
+      receiverSignImage: {
+        type: Sequelize.UUID
+      },
+      receiverSignChatImage: {
+        type: Sequelize.UUID
+      },
       createdBy: {
         type: Sequelize.UUID
       },
@@ -44,20 +68,18 @@ module.exports = {
       },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
-    });
+    }, {
+        timestamps: false
+      });
+
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeCases');

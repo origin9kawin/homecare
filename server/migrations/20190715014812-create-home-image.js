@@ -8,53 +8,48 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
+      caseId: {
+        type: Sequelize.UUID
+      },
       casedetId: {
-        allowNull: false,
+        type: Sequelize.UUID
+      },
+      statusId: {
         type: Sequelize.UUID
       },
       mainimgtagId: {
-        allowNull: false,
         type: Sequelize.UUID,
       },
       subimgtagId: {
-        allowNull: true,
         type: Sequelize.UUID,
       },
       fileName: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       fileType: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       fileSize: {
-        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdBy: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeImages');

@@ -9,37 +9,36 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING,
       },
       color: {
-        allowNull: false,
         type: Sequelize.STRING,
       },
       maincatId: {
         type: Sequelize.UUID
       },
+      slaDay: {
+        type: Sequelize.INTEGER,
+      },
       createdBy: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeSubCats');

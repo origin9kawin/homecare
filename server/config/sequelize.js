@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 module.exports = {
   development: {
     username: process.env.SQL_USER,
@@ -18,7 +17,8 @@ module.exports = {
     define: {
       freezeTableName: false,
       timestamps: false
-    }
+    },
+    timezone: '+07:00'
   },
   production: {
     username: process.env.SQL_USER,
@@ -36,6 +36,7 @@ module.exports = {
     define: {
       freezeTableName: false,
       timestamps: false
-    }
+    },
+    timezone: '+07:00'
   }
 };

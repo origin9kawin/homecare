@@ -27,7 +27,9 @@ module.exports = {
     const data = []
     for (let i = 0; i < mock.MOCK_DATA_GENERATE; i++) {
       data.push({
-        name: faker.address.streetAddress(),
+        // name: faker.address.city(),
+        // name: faker.address.streetAddress(),
+        name: faker.commerce.productName(),
         color: faker.internet.color(),
         createdBy: await xcreatedBy(),
       })
@@ -49,12 +51,18 @@ module.exports = {
         await Promise.delay(1000);
         resolve(
           // item
-          await models.HomeProj.create({
-            id: uuidv4(),
-            name: item.name,
-            color: item.color,
-            createdBy: item.createdBy,
-            createdAt: new Date(),
+          await models.HomeProj.findOrCreate({
+            where: {
+              name: item.name,
+            },
+            defaults: {
+              id: uuidv4(),
+              name: item.name,
+              color: item.color,
+              createdBy: item.createdBy,
+              createdAt: new Date(),
+              // updatedAt: new Date(),
+            }
           })
         ) // resolve
       });

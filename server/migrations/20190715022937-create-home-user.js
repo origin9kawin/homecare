@@ -9,21 +9,17 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       username: {
-        allowNull: false,
         type: Sequelize.STRING,
         unique: true
       },
       firstname: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       email: {
-        allowNull: false,
         type: Sequelize.STRING,
         unique: true
       },
       hashPwd: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       loginToken: {
@@ -33,7 +29,6 @@ module.exports = {
         type: Sequelize.STRING
       },
       userExpiredAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       createdBy: {
@@ -43,20 +38,18 @@ module.exports = {
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+      },
+      role: {
+        type: Sequelize.INTEGER,
       },
       visible: {
-        allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },

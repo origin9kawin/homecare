@@ -1,14 +1,7 @@
-/**
- * verify user input
- * verify loginToken
- * insert category name etc... to database
- */
 const express = require('express');
 const router = express.Router();
 const models = require('../../models');
 const Debug = require('debug')
-// const uuidv4 = require('uuid/v4');
-
 router.post('/', async (req, res, next) => {
   const debug = new Debug('--> start main category')
   debug(req.headers)
@@ -39,7 +32,6 @@ router.post('/', async (req, res, next) => {
                   res.status(401).json({
                     message: {
                       message: 'data may duplicate 1',
-                      // system: error
                     }
                   })
                 })
@@ -47,12 +39,6 @@ router.post('/', async (req, res, next) => {
           })
           .catch((error) => {
             debug(error)
-            // res.status(401).json({
-            //   message: {
-            //     message: 'data may duplicate 0',
-            //     // system: error
-            //   }
-            // })
           })
       })
     }
@@ -63,5 +49,4 @@ router.post('/', async (req, res, next) => {
   }
   debug('---> end')
 });
-
 module.exports = router

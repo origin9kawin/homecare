@@ -1,20 +1,12 @@
-/**
- * clear loginToken
- * return json navigate user to login view
- */
 const express = require('express');
 const router = express.Router();
 const models = require('../../models');
 const Joi = require('@hapi/joi');
 const Debug = require('debug');
-
-
 const schema = Joi.object().keys({
   userId: Joi.string().trim().regex(/^[a-zA-Z0-9-]{36}$/).required(),
   loginToken: Joi.string().required()
-  // -/^[a-zA-Z0-9.-_]{165,188}$/
 });
-
 router.get('/', (req, res) => res.status(403).send('hello world'));
 router.put('/', async (req, res, next) => {
   const debug = Debug('!!!-----------> debug begin signout');
@@ -63,7 +55,5 @@ router.put('/', async (req, res, next) => {
     debug('done trying')
   }
   debug('!!!-----------> debug end signout');
-
 })
-
 module.exports = router

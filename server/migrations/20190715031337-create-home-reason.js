@@ -9,43 +9,37 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING,
         unique: true
       },
       color: {
-        allowNull: false,
         type: Sequelize.STRING
       },
-      initState: {
-        allowNull: true,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+      ordering: {
+        type: Sequelize.INTEGER
+      },
+      color: {
+        type: Sequelize.STRING
       },
       createdBy: {
-        allowNull: false,
         type: Sequelize.UUID
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.UUID
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeReasons');

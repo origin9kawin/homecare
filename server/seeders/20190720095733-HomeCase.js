@@ -24,8 +24,8 @@ async function randomCats() {
       // console.log(result)
       let data = []
       data.push({
-        catId: await result[0].get().id,
-        subcatId: await result[0].get().maincatId,
+        subcatId: await result[0].get().id,
+        catId: await result[0].get().maincatId,
       })
       return await data
     })
@@ -34,9 +34,12 @@ async function randomCats() {
 async function randomStatus() {
   const status = await models.HomeStatus.findAll({
     attributes: ['id'],
-    order: [
-      [Sequelize.literal('RAND()')]
-    ],
+    where: {
+      ordering: 1,
+    },
+    // order: [
+    //   [Sequelize.literal('RAND()')]
+    // ],
     limit: 1,
   })
     .then(async (result) => {
@@ -73,45 +76,74 @@ async function randomProj() {
     })
   return proj
 }
+async function randomImgTagZero() {
+  const status = await models.HomeImgMainTag.findAll({
+    attributes: ['id', 'name'],
+    where: {
+      ordering: 1,
+    },
+    limit: 1,
+  })
+    .then(async (result) => {
+      let data = []
+      data.push({
+        mainimgtagId: await result[0].get().id,
+      })
+      return data;
+    })
+    .then(async (result) => {
+      return result;
+    })
+  return status
+}
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const homecases = []
-    for (let i = 0; i < mock.MOCK_DATA_GENERATE; i++) {
+    for (let i = 0; i < mock.MOCK_DATA_GENERATE_CASE; i++) {
       const random_cat = await randomCats();
-      // const random_status = await randomStatus();
-      // const random_proj = await randomProj();
-      // console.log(random_cat[0].catId)
-      // console.log(random_cat[0].subcatId)
-      // console.log(random_status[0].id)
-      // console.log(random_proj[0].id)
+      const random_status = await randomStatus();
+      const random_proj = await randomProj();
+      const random_creater = await xcreatedBy();
+      const random_imgtag = await randomImgTagZero();
+
       var catId = random_cat[0].catId;
       var subcatId = random_cat[0].subcatId;
-      var statusId = await randomStatus();
-      var projId = await randomProj();
-      var creater = await xcreatedBy();
-      // var creater = '11111';
+      var mainimgtagId = random_imgtag[0].mainimgtagId;
+      var statusId = random_status;
+      var projId = random_proj;
+      var creater = random_creater;
       let issuerPhone = [];
       let ownerPhone = [];
       let listDefects = []
+      let images = [];
       for (let j = 0; j < mock.MOCK_DATA_GENERATE_PHONE; j++) {
         issuerPhone.push({
-          number: faker.phone.phoneNumber(),
+          number: faker.address.zipCode(),
           color: faker.internet.color(),
-          createdBy: creater,
         })
         ownerPhone.push({
-          number: faker.phone.phoneNumber(),
+          number: faker.address.zipCode(),
           color: faker.internet.color(),
-          createdBy: creater,
         })
       } // child gen
       for (let j = 0; j < mock.MOCK_DATA_GENERATE_DEFECT; j++) {
         listDefects.push({
           name: faker.name.findName(),
+          remark: faker.name.findName(),
           color: faker.internet.color(),
-          createdBy: creater,
         })
       } // child gen
+      for (let k = 0; k < mock.MOCK_DATA_GENERATE_IMAGE; k++) {
+        images.push({
+          statusId: statusId,
+          mainimgtagId: mainimgtagId,
+          // fileName: faker.name.firstName() + '.jpg',
+          fileName: 'a.jpg',
+          fileSize: faker.finance.mask(),
+          fileType: 'jpeg',
+        })
+      }
       homecases.push({
         projId: projId,
         statusId: statusId,
@@ -129,15 +161,12 @@ module.exports = {
           phone: ownerPhone,
           createdBy: creater,
         },
-        caseDetail: {
-          description: faker.lorem.sentence(),
-          checkDetail: faker.lorem.sentences(),
-          checkInDate: faker.date.past(),
-          remark: faker.lorem.word(),
-          // slaDay: 1,
-          listDefects: listDefects,
-        },
+        description: faker.lorem.sentences(),
+        checkInDate: faker.date.past(),
+        remark: faker.lorem.word(),
+        listDefects: listDefects,
         createdBy: creater,
+        images: images,
       })
     }
     // end data structure
@@ -165,10 +194,23 @@ module.exports = {
           })
         })
         let defectes = []
-        hmcase.caseDetail.listDefects.forEach(def => {
+        hmcase.listDefects.forEach(def => {
           defectes.push({
             name: def.name,
+            remark: def.remark,
             color: def.color,
+            createdBy: creater,
+          })
+        })
+        let images = [];
+        hmcase.images.forEach(img => {
+          images.push({
+            statusId: img.statusId,
+            mainimgtagId: img.mainimgtagId,
+            subimgtagId: img.subimgtagId,
+            fileName: img.fileName,
+            fileSize: img.fileSize,
+            fileType: img.fileType,
             createdBy: creater,
           })
         })
@@ -187,13 +229,11 @@ module.exports = {
             moveinDate: hmcase.homecareOwner.moveinDate,
             phone: ownPhone,
           },
-          caseDetail: {
-            description: hmcase.caseDetail.description,
-            checkDetail: hmcase.caseDetail.checkDetail,
-            checkInDate: hmcase.caseDetail.checkInDate,
-            remark: hmcase.caseDetail.remark,
-            listDefects: defectes,
-          },
+          description: hmcase.description,
+          checkInDate: hmcase.checkInDate,
+          remark: hmcase.remark,
+          listDefects: defectes,
+          images: images,
           createdBy: creater,
         })
       })
@@ -205,7 +245,10 @@ module.exports = {
         await Promise.delay(1000);
         resolve(
           models.HomeCaseNumber
-            .create()
+            .create({
+              createdAt: new Date(),
+              createdBy: creater
+            })
             .then(async (result) => {
               // console.log('id: ' + result.get().id);
               return await result.get().id
@@ -220,54 +263,43 @@ module.exports = {
                   id: uuidv4(),
                   casenumberId: increment,
                   projectId: item.projId,
+                  catId: item.catId,
+                  subcatId: item.subcatId,
+                  statusId: item.statusId,
                   units: item.units,
                   issuerName: item.issuer.name,
                   homecareName: item.homecareOwner.name,
                   homecareInDate: item.homecareOwner.moveinDate,
-                  catId: item.catId,
-                  statusId: item.statusId,
-                  subcatId: item.subcatId,
+                  description: item.description,
                   createdBy: creater,
+                  createdAt: new Date(),
+                  // updatedAt: new Date()
                 },
                 limit: 1,
               })
-                .then(async (result, created) => {
+                .then(async (rst, created) => {
+                  // console.log(rst);
                   if (!created) {
-                    await models.HomeCaseDet.create({
-                      id: uuidv4(),
-                      description: item.caseDetail.description,
-                      checkInDate: item.caseDetail.checkInDate,
-                      checkDetail: item.caseDetail.checkDetail,
-                      remark: item.remark,
-                      createdBy: item.createdBy,
-                      slaDay: item.slaDay,
-                      catId: item.catId,
-                      statusId: item.statusId,
-                      subcatId: item.subcatId,
-                      caseId: result[0].get().id
+                    let caseId = rst[0].id
+                    console.log(caseId);
+
+                    var data = [];
+                    item.listDefects.forEach(function (def) {
+                      data.push({
+                        id: uuidv4(),
+                        name: def.name,
+                        color: def.color,
+                        remark: def.remark,
+                        createdBy: item.createdBy,
+                        caseId: caseId,
+                        createdAt: new Date(),
+                      });
                     })
-                      .then(async (rst, created) => {
-                        let casedetId = rst.get().id
-                        if (!created) {
-                          var data = [];
-                          item.caseDetail.listDefects.forEach(function (def) {
-                            data.push({
-                              id: uuidv4(),
-                              name: def.name,
-                              color: def.color,
-                              createdBy: item.createdBy,
-                              casedetId: casedetId,
-                              // TODO
-                              // caseId: result[0].get().id
-                            });
-                          })
-                          return await models.HomeListDefect.bulkCreate(data, {
-                            updateOnDuplicate: ['caseId', 'casedetId', 'name']
-                          })
-                        }
-                      })
-                  }
-                  if (!created) {
+                    await models.HomeListDefect.bulkCreate(data, {
+                      updateOnDuplicate: ['caseId', 'name']
+                    })
+
+
                     var data = [];
                     item.issuer.phone.forEach(function (isPhone) {
                       data.push({
@@ -276,14 +308,15 @@ module.exports = {
                         color: isPhone.color,
                         createdBy: item.createdBy,
                         homecareOwner: false,
-                        caseId: result[0].get().id
+                        caseId: caseId,
+                        createdAt: new Date(),
+                        // updatedAt: new Date()
                       });
                     })
                     await models.HomePhone.bulkCreate(data, {
                       updateOnDuplicate: ['caseId', 'number']
                     })
-                  }
-                  if (!created) {
+
                     var data = [];
                     item.homecareOwner.phone.forEach(function (isPhone) {
                       data.push({
@@ -292,12 +325,37 @@ module.exports = {
                         color: isPhone.color,
                         createdBy: item.createdBy,
                         homecareOwner: true,
-                        caseId: result[0].get().id
+                        caseId: caseId,
+                        createdAt: new Date(),
+                        // updatedAt: new Date()
+
                       });
                     })
                     await models.HomePhone.bulkCreate(data, {
                       updateOnDuplicate: ['caseId', 'number']
                     })
+
+                    var data = [];
+                    item.images.forEach(function (image) {
+                      data.push({
+                        id: uuidv4(),
+                        caseId: caseId,
+                        statusId: image.statusId,
+                        mainimgtagId: image.mainimgtagId,
+                        subimgtagId: image.subimgtagId,
+                        fileName: image.fileName,
+                        fileSize: image.fileSize,
+                        fileType: image.fileType,
+                        createdBy: item.createdBy,
+                        createdAt: new Date(),
+                      })
+                    })
+                    await models.HomeImage.bulkCreate(data, {
+                      updateOnDuplicate: ['caseId']
+                    })
+
+
+
                   }
                 })
             })
@@ -314,6 +372,5 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('HomeCase', null, {});
-    await queryInterface.bulkDelete('HomeCaseDet', null, {});
   }
 };

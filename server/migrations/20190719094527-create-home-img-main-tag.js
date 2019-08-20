@@ -10,43 +10,38 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING,
         unique: true
       },
       color: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       ordering: {
-        allowNull: true,
         type: Sequelize.INTEGER,
       },
+      selectAble: {
+        type: Sequelize.BOOLEAN,
+      },
       createdBy: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       updatedBy: {
-        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       },
       deletedAt: {
-        allowNull: true,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
 
 
-    });
+    }, {
+        timestamps: false
+      });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('HomeImgMainTags');
